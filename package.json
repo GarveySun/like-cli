@@ -14,5 +14,8 @@
     "table": "^5.2.3"
   },
   "license": "MIT",
-  "repository": {}
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GarveySun/like-cli.git"
+  }
 }
