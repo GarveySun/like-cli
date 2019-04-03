@@ -7,22 +7,9 @@
  * Description:
  *
  *************************************************/
-const getConfig = require('./lib/getConfig')
 const log = require('./lib/log')
 const getProjects = require('./lib/getProjects')
 const showTable = require('./lib/showTable')
-
-const checkPath = function(){
-  let config = getConfig()
-
-  if(!config.root){
-    log.warn('config.json中的root值无效，请先用config set root [path]设置项目目录')
-  }else if(!config.name || !config.email){
-    log.warn('config.json中的name与email值无效，请先用config set [name|email] [value]完成设置')
-  }else{
-    return true
-  }
-}
 
 const queryFilter = function(list,keyword){
   if(typeof keyword !== 'string')return list
@@ -33,8 +20,6 @@ const queryFilter = function(list,keyword){
 }
 
 module.exports = function(query,cmd){
-
-  if(!checkPath()) return
 
   let projects = queryFilter(getProjects(),query)
 

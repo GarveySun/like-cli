@@ -29,7 +29,7 @@ const handleSet = function(options){
     return
   }
 
-  let config = getConfig()
+  let config = require('../data/config.json')
   if(!config.hasOwnProperty(options[0])){
     log.error('未知的config.json键：' + options[0])
   }else{

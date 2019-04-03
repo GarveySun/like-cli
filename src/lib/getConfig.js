@@ -16,6 +16,14 @@ const log = require('../lib/log')
 module.exports = function(keys){
   let config = fse.readJSONSync(path.join(__dirname,'../../data/config.json'))
 
+  if(!config.root){
+    log.error('config.json中的root值无效，请先用config set root [path]设置项目目录')
+    process.exit()
+  }else if(!config.name || !config.email){
+    log.error('config.json中的name与email值无效，请先用config set [name|email] [value]完成设置')
+    process.exit()
+  }
+
   if(!keys || keys.length === 0) return config
 
   let data = {},unknow = []
