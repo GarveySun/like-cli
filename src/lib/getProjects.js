@@ -1,10 +1,9 @@
 const fs = require('fs')
 const fse = require('fs-extra')
 const path = require('path')
-const getConfig = require('./getConfig')
+const config = require('../../data/config.json')
 
 module.exports = function () {
-  const config = getConfig()
 
 // 待发布的目录，对应 likechuxing-html/frontendDist
   const PROJECT_BUILD_ROOT = path.join(config.root, '../../', 'likechuxing-html/frontendDist/')

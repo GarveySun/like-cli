@@ -7,54 +7,79 @@
  * Description:
  *
  *************************************************/
-const getConfig = require('./lib/getConfig')
+const config = require('../data/config.json')
 const log = require('./lib/log')
 const fse = require('fs-extra')
 const path = require('path')
+const inquirer = require('inquirer');
 
-const handleGet = function(options){
-  log.out(getConfig(options))
+const handleGet = function(){
+  log.out(config)
 }
 
-const handleValue = function(value){
-  if(value === 'true')return true
-  if(value === 'false')return false
-  if(/^\d+$/.test(value))return Number(value)
-  return value
+const handleSet = function(){
+  const promptList = [
+    {
+      type: 'input',
+      message: '输入项目目录，精确到 ***/likechuxing-html-src/frontend 文件夹',
+      name: 'root',
+      validate: function (val) {
+        if(/frontend$/.test(val)){
+          return true
+        }
+
+        return '请精确到 ***/likechuxing-html-src/frontend 文件夹'
+      },
+      default:config.root
+    },
+    {
+      type: 'input',
+      message: '输入你的名字（全英文）',
+      name: 'name',
+      validate: function (val) {
+        if(val === config.name || /^[a-zA-Z0-9\s]+$/.test(val)){
+          return true
+        }
+
+        return '请输入全英文名字'
+      },
+      default:config.name
+    },
+    {
+      type: 'input',
+      message: '输入你的邮箱（XXX@likechuxing.com）',
+      name: 'email',
+      validate: function (val) {
+        if(val === config.email || /@likechuxing\.com$/.test(val)){
+          return true
+        }
+
+        return '请设置公司邮箱'
+      },
+      default:config.email
+    },
+  ];
+
+  inquirer.prompt(promptList).then(answers=>{
+    let file_path = path.join(__dirname,'../data/config.json')
+    fse.writeJson(file_path, answers, {spaces:2}).then(()=>{
+        return fse.readJson(file_path)
+    }).then(res=>{
+      log.out(res)
+    }).catch(err=>{
+      throw err
+    })
+  })
 }
 
-const handleSet = function(options){
-  if(options.length !==2){
-    log.error('格式不对，应该是config set [key] [value]')
-    return
-  }
-
-  let config = require('../data/config.json')
-  if(!config.hasOwnProperty(options[0])){
-    log.error('未知的config.json键：' + options[0])
-  }else{
-
-    config[options[0]] = handleValue(options[1])
-
-    fse.writeJson(
-      path.join(__dirname,'../data/config.json'),
-      config,
-      {spaces:2},
-      err=>{
-        if(err) throw err
-        log.out(getConfig([options[0]]))
-      })
-  }
-}
-
-module.exports = function([method,...options]){
+module.exports = function(method){
 
   switch (method){
     case 'get':
-      handleGet(options)
+      handleGet()
       break;
     case 'set':
-      handleSet(options)
+      handleSet()
       break;
     default:
       log.error('无效的操作参数，lkf config [get|set]')

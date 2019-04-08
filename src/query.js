@@ -10,6 +10,7 @@
 const log = require('./lib/log')
 const getProjects = require('./lib/getProjects')
 const showTable = require('./lib/showTable')
+const configReady = require('./lib/configReady')
 
 const queryFilter = function(list,keyword){
   if(typeof keyword !== 'string')return list
@@ -20,6 +21,8 @@ const queryFilter = function(list,keyword){
 }
 
 module.exports = function(query,cmd){
+
+  configReady()
 
   let projects = queryFilter(getProjects(),query)
 

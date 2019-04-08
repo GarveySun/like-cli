@@ -11,7 +11,7 @@ program
   //.option('-l, --list [list]', 'list of customers in CSV file')
 
 program
-  .command('config [orders...]')
+  .command('config [order]')
   .description('get/set the config file')
   .action(handleConfig)
 

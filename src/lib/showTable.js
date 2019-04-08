@@ -10,7 +10,7 @@
 const chalk = require('chalk');
 const table = require('table');
 const path = require('path')
-const getConfig = require('./getConfig')
+const config = require('../../data/config.json')
 
 const color = function(str, keyword) {
   return !!keyword ? str.replace(new RegExp(keyword,'gi'), function(match){
@@ -19,7 +19,6 @@ const color = function(str, keyword) {
 }
 
 module.exports = function(list,keyword){
-  const config = getConfig()
   let total = list.length
 
   console.log(table.table([

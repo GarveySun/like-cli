@@ -1,4 +1,5 @@
-const getConfig = require('./lib/getConfig')
+const config = require('../data/config.json')
+const configReady = require('./lib/configReady')
 const log = require('./lib/log')
 const fse = require('fs-extra')
 const path = require('path')
@@ -27,7 +28,9 @@ const replaceKeys = function(target,info){
 }
 
 module.exports = function () {
-  const config = getConfig()
+
+  configReady()
+
   const projects = getProjects()
 
   const promptList = [
